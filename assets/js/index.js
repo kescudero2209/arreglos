@@ -71,3 +71,57 @@ for (const prop of propiedadesJSON) {
 `;
 }
 propiedades.innerHTML = html;
+
+document.querySelector("#btn").addEventListener("click", (e) => {
+  
+    const rooms = document.querySelector("#valRooms").value;
+    const metersFrom = document.querySelector("#valMetersFrom").value;
+    const metersTo = document.querySelector("#valMetersTo").value;
+    console.log(rooms);
+    
+    if(rooms == "" && metersFrom == "" && metersTo == ""){
+      alert("Favor ingrese valores, los campos se encuentran en blanco");
+      return false;
+  
+    }else if (rooms == "" ) {
+      alert("Favor ingrese un número válido de habitaciones a buscar");
+      return false;
+    }else if(metersFrom == "" || metersTo == ""){
+      alert("Favor ingrese un número válido de metros cuadrados a buscar");
+      return false;
+    }
+   
+    const finalProp = propiedadesJSON.filter(
+      p => p.rooms == rooms && p.m >= metersFrom && p.m <= metersTo
+    );
+    let cant = finalProp.length;
+    span.innerHTML = cant;
+  
+    clearPropiedades()
+    finalProp.forEach((prop)=>{
+      console.log("prop each", prop) 
+      propiedades.innerHTML += createCards(prop.src, prop.name, prop.rooms, prop.m, prop.description)
+    })
+  
+  })
+  const createCards = (src, name, rooms, m, description) => {
+    return `
+    <section id="Propiedades">
+    <div class="propiedad">
+        <div class="img" style="background-image: url(${src})"></div>
+        <section>
+            <h5>${name}</h5>
+            <div class="d-flex justify-content-between">
+                 <p>Cuartos: ${rooms}</p>
+                 <p>Metros: ${m}</p>
+            </div>
+            <p class="my-3">${description}</p>
+  
+            <button class="btn btn-info ">Ver más</button>
+        </section>
+    </div>
+        </section>
+              `;
+  };
+  const clearPropiedades = () => (propiedades.innerHTML = "");
+  
